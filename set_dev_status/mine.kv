@@ -1,0 +1,150 @@
+#: import sm1 kivy.uix.screenmanager
+ScreenManagement:
+    transition: sm1.RiseInTransition()
+    Myrootwidget:
+    SecondWindow:
+    AddDb:
+    Db_manipulate:
+<Myrootwidget>:
+    name: "main"
+   
+    BoxLayout: 
+        padding:20
+        orientation: 'vertical'
+        BoxLayout:
+            Label:
+                color: 0,0,0,1
+                size_hint_x: 20
+                text: 'Host : '
+            TextInput:
+                id: txthst
+
+                size_hint_x:80
+                text_hint: 'input hostname/ip'
+        BoxLayout:        
+        BoxLayout:
+            Label:
+                color: 0,0,0,1
+                text: 'Username'
+            TextInput:
+                id: txtusr
+                text_hint: 'input the username'
+        BoxLayout:
+        BoxLayout:
+            Label:
+                color: 0,0,0,1
+                text:'Password'
+            TextInput:
+                id: txtpwd
+                text_hint:'input the password'
+                password: True
+        BoxLayout:
+        BoxLayout:
+            Label:
+                color: 0,0,0,1
+                text:'Database'
+            TextInput:
+                id: txtdb
+                text_hint:'input database'
+                
+        BoxLayout:
+        BoxLayout:
+            Label:
+                color: 0,0,0,1
+                text:'Tabel'
+            TextInput:
+                id: txttb
+                text_hint:'input tabel'
+                
+        BoxLayout:
+        BoxLayout:
+            Label:
+            Button:
+
+                text: 'Login'
+                on_press: root.btn_act()
+            Label:
+            Button:
+                text: 'exit'
+                on_press: root.close_application()
+            Label:
+            Button:
+                id: f_but
+                text: f_but.state
+            Label:
+            Button:
+                background_down: "windows8.png"
+                background_normal: "windows8_1.png"
+                #background_color: 0.1, 0.5, 0.6, 1
+                on_press:
+                    root.btn()
+
+                
+                on_release:
+                    app.root.current = 'second'
+            Label:
+<SecondWindow>:
+    name: "second"
+    BoxLayout:
+
+        Button:
+            id: btn2
+            #text: 'second window'
+            on_press:
+                self.text="second window"
+        Button:
+            id: scn_id
+            text: 'second button'
+            on_press: root.scn_btn()
+        Button:
+            text: 'back'
+            on_release:
+                app.root.current='main'
+                #app.root.transition.direction='right'
+<AddDb>:
+    name: "tambah"
+    #dbname:dbname
+
+    BoxLayout: 
+        orientation: 'vertical'
+        padding: 20
+        BoxLayout:
+        BoxLayout:
+            Label:
+            Button:
+                id: use_ids
+                text: "ON"
+                on_press:
+                    root.on_btn()
+            Label:
+            Button:
+                id: use_idz
+                text: "OFF"
+                on_press:
+                    root.off_btn()   
+            Label:
+        BoxLayout:
+        BoxLayout:       
+        # anchor_x: 'center'
+        # anchor_y: 'center'
+        #size_hint: 0.1,0.1
+
+
+            
+
+        
+<Db_manipulate>:
+    name: "db_man"
+    #dbname:dbname
+    BoxLayout:        
+        # anchor_x: 'center'
+        # anchor_y: 'center'
+        #size_hint: 0.1,0.1
+        orientation: 'vertical'
+        padding: 20 
+        BoxLayout:
+            Label:
+            Button:
+                text: "back"      
+                on_press: app.root.current='tambah'
+            Label:
