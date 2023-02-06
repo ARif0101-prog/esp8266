@@ -1,0 +1,89 @@
+import mysql.connector
+from kivy.uix.boxlayout import BoxLayout
+from kivy.app import App
+from kivy.core.window import Window
+from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.lang import Builder
+import time
+from kivy.clock import Clock
+Window.clearcolor = (1, 1, 1, 1)
+
+
+global db_connection
+class ScreenManagement(ScreenManager):
+
+    pass
+
+class Myrootwidget(Screen):
+    def btn_act(self):
+        global dphst, dpusr, dppwd
+        dphst=self.ids.txthst.text
+        dpusr=self.ids.txtusr.text
+        dppwd=self.ids.txtpwd.text
+        #self.manager.current="tambah"
+        try:
+            global db_connection
+            db_connection = mysql.connector.connect(host=dphst, user=dpusr, passwd=dppwd)
+            if (db_connection.is_connected() == True):
+                self.manager.current="tambah"
+
+            return print(db_connection.is_connected())
+
+
+        except:
+            return print('error bro')
+
+    def close_application(self):
+        App.get_running_app().stop()
+        Window.close()
+    def btn(self):
+        self.manager.get_screen("second").ids.btn2.text="changed"
+class SecondWindow (Screen):
+    def scn_btn(self):
+
+        return print(self.ids.scn_id.text)
+
+class AddDb(Screen):
+
+    def stp_btn(self):
+        dd.cancel()
+
+    def readComm(self,_):
+        global db
+        db= self.ids.dbname.text
+        db = mysql.connector.connect(host=dphst, user=dpusr, passwd=dppwd, database=db)
+        cursor=db.cursor()
+        sql = "SELECT * FROM sensor_data ORDER BY datetime DESC LIMIT 2;"
+        try:
+            cursor.execute(sql)
+            word=''
+            # Fetch all the rows in a list of lists.
+            results = cursor.fetchall()
+            for i in results:
+                word = f'{word}\n{i}' #n{i[0]} to select the first column
+                self.ids.sh_id.text= f'{word}'
+            #print (results)
+            db.commit()               
+            #print(results)
+        except:
+            print ("Error! Unable to fetch data" )
+        #time.sleep(1)
+        return
+   
+    def use_btn(self):
+        global dd
+        dd = Clock.schedule_interval(self.readComm, 5)
+
+class Db_manipulate(Screen):
+    pass
+
+presentation = Builder.load_file("mine.kv")    
+        
+
+class MyApp(App):
+    title = 'created by arif'
+    def build(self):
+        return presentation
+
+if __name__=="__main__":
+    MyApp().run()
